@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="bs">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dostavko za restorane · narudžbe hrane bez skupe provizije</title>
+<meta name="description" content="Dostavko je aplikacija za naručivanje hrane u Sarajevu za restorane koji imaju svoju dostavu. Bez pretplate i bez dodatnih naknada: plaćate samo 5% od isporučene narudžbe." />
+<meta property="og:title" content="Dostavko za restorane" />
+<meta property="og:description" content="Kupci vide Vaš meni sa slikama i naručuju u par klikova. Vi dostavljate kao i do sada. Bez pretplate, otkažite kad hoćete." />
+<meta property="og:image" content="img/board.jpg" />
+<meta name="theme-color" content="#d74720" />
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --brand: #d74720;
+    --brand-dark: #b8391a;
+    --brand-strong: #a92f22;
+    --tint: #fff0e7;
+    --tint-strong: #ffe7d9;
+    --ink: #292321;
+    --muted: #776d67;
+    --faint: #9c938d;
+    --line: #ede5df;
+    --cream: #fff8f1;
+    --page: #fbfaf7;
+    --sand: #f4efe8;
+    --green: #26734c;
+    --green-tint: #edf6ef;
+    --white: #ffffff;
+    --radius: 20px;
+    --shadow: 0 1px 2px rgba(41, 35, 33, .05), 0 18px 40px -18px rgba(41, 35, 33, .22);
+    --shadow-lg: 0 2px 4px rgba(41, 35, 33, .05), 0 40px 80px -30px rgba(41, 35, 33, .35);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--ink);
+    background: var(--cream);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  a { color: inherit; }
+  h1, h2, h3 { line-height: 1.12; margin: 0; letter-spacing: -0.02em; }
+  h1 { font-size: clamp(38px, 5.6vw, 66px); font-weight: 800; letter-spacing: -0.035em; }
+  h2 { font-size: clamp(30px, 3.8vw, 46px); font-weight: 800; letter-spacing: -0.03em; }
+  h3 { font-size: 22px; font-weight: 700; }
+  p { margin: 0; }
+  .wrap { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 104px 0; }
+  .eyebrow {
+    display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--brand-strong); margin-bottom: 16px;
+  }
+  .lead { font-size: 20px; color: var(--muted); max-width: 640px; }
+  .section-head { max-width: 720px; margin-bottom: 56px; }
+  .section-head .lead { margin-top: 18px; }
+  .center { text-align: center; margin-left: auto; margin-right: auto; }
+  .center .lead { margin-left: auto; margin-right: auto; }
+  .accent { color: var(--brand); }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 16px 26px; border-radius: 14px; font-weight: 700; font-size: 17px;
+    text-decoration: none; border: 0; cursor: pointer; transition: background .15s, transform .15s;
+  }
+  .btn.primary { background: var(--brand); color: var(--white); }
+  .btn.primary:hover { background: var(--brand-dark); }
+  .btn.ghost { background: var(--white); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+  .btn.ghost:hover { background: var(--tint); }
+  .btn.dark { background: var(--ink); color: var(--white); }
+  .btn:active { transform: translateY(1px); }
+
+  /* Nav */
+  .nav {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(255, 248, 241, .86); backdrop-filter: saturate(1.4) blur(14px);
+    -webkit-backdrop-filter: saturate(1.4) blur(14px);
+    border-bottom: 1px solid transparent; transition: border-color .2s;
+  }
+  .nav.scrolled { border-bottom-color: var(--line); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 24px; }
+  .logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo b { font-size: 30px; font-weight: 800; letter-spacing: -1.2px; color: var(--brand); line-height: 1; }
+  .logo span {
+    font-size: 12px; font-weight: 700; color: var(--white); background: var(--ink);
+    padding: 4px 9px; border-radius: 999px; letter-spacing: .01em;
+  }
+  .nav-links { display: flex; gap: 30px; font-size: 15px; font-weight: 600; }
+  .nav-links a { text-decoration: none; color: var(--muted); }
+  .nav-links a:hover { color: var(--ink); }
+  .nav .btn { padding: 11px 18px; font-size: 15px; border-radius: 12px; }
+
+  /* Hero */
+  .hero { padding: 72px 0 40px; overflow: hidden; }
+  .hero-grid { display: grid; grid-template-columns: 1fr; gap: 56px; }
+  .hero-copy { max-width: 820px; }
+  .hero h1 .accent { white-space: nowrap; }
+  .hero .lead { margin-top: 24px; font-size: 21px; max-width: 680px; }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; padding: 0; list-style: none; }
+  .chips li {
+    display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600;
+    background: var(--white); border: 1px solid var(--line); padding: 8px 14px; border-radius: 999px;
+  }
+  .chips li::before {
+    content: ""; width: 18px; height: 18px; border-radius: 50%; flex: none;
+    background: var(--green-tint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2326734c' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 12px no-repeat;
+  }
+  .hero-visual { position: relative; padding-right: 110px; }
+
+  /* Device frames */
+  .browser {
+    background: var(--white); border-radius: 16px; overflow: hidden;
+    box-shadow: var(--shadow-lg); border: 1px solid var(--line);
+  }
+  .browser .bar {
+    height: 38px; display: flex; align-items: center; gap: 7px; padding: 0 16px;
+    background: var(--sand); border-bottom: 1px solid var(--line);
+  }
+  .browser .bar i { width: 11px; height: 11px; border-radius: 50%; background: #dcd3cc; }
+  .browser .bar em {
+    margin-left: 14px; font-style: normal; font-size: 12px; color: var(--muted);
+    background: var(--white); border-radius: 7px; padding: 3px 12px; border: 1px solid var(--line);
+  }
+  .phone {
+    background: var(--ink); padding: 9px; border-radius: 42px; box-shadow: var(--shadow-lg);
+    width: 260px; flex: none;
+  }
+  .phone img { border-radius: 33px; width: 100%; }
+  .hero-visual .phone { position: absolute; right: 0; bottom: -40px; width: 250px; }
+
+  /* Strip */
+  .strip { padding: 0; margin-top: 40px; }
+  .strip .wrap {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  }
+  .strip .wrap > div { padding: 28px 24px; border-left: 1px solid var(--line); }
+  .strip .wrap > div:first-child { border-left: 0; padding-left: 0; }
+  .strip strong { display: block; font-size: 30px; font-weight: 800; letter-spacing: -0.03em; }
+  .strip span { color: var(--muted); font-size: 15px; }
+
+  /* Visibility */
+  .visibility { background: var(--white); }
+  .split { display: grid; grid-template-columns: 1.05fr .95fr; gap: 72px; align-items: center; }
+  .split.reverse { grid-template-columns: .95fr 1.05fr; }
+  .split.reverse > :first-child { order: 2; }
+  .benefits { display: grid; gap: 26px; margin-top: 40px; }
+  .benefit { display: grid; grid-template-columns: 52px 1fr; gap: 18px; }
+  .benefit .ico {
+    width: 52px; height: 52px; border-radius: 15px; background: var(--tint);
+    display: grid; place-items: center; color: var(--brand-strong);
+  }
+  .benefit h3 { font-size: 19px; margin-bottom: 4px; }
+  .benefit p { color: var(--muted); font-size: 16px; }
+  .phones-pair { display: flex; justify-content: center; gap: 22px; align-items: flex-start; }
+  .phones-pair .phone:nth-child(2) { margin-top: 70px; }
+  .caption { text-align: center; font-size: 14px; color: var(--muted); margin-top: 14px; }
+
+  /* Own delivery callout */
+  .own {
+    background: var(--ink); color: var(--white); border-radius: 32px; padding: 64px;
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: 56px; align-items: center;
+    position: relative; overflow: hidden;
+  }
+  .own::after {
+    content: ""; position: absolute; right: -120px; top: -120px; width: 420px; height: 420px;
+    border-radius: 50%; border: 70px solid rgba(215, 71, 32, .16); pointer-events: none;
+  }
+  .own .eyebrow { color: #ff9b78; }
+  .own .lead { color: #d9cfc8; margin-top: 18px; }
+  .own ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; position: relative; z-index: 1; }
+  .own li {
+    background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: 16px; padding: 18px 20px; font-weight: 600; display: flex; gap: 14px; align-items: flex-start;
+  }
+  .own li small { display: block; font-weight: 400; color: #c9bdb5; font-size: 15px; margin-top: 2px; }
+  .own li b { color: #ff9b78; font-size: 20px; line-height: 1.3; }
+
+  /* Steps */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; counter-reset: s; margin-bottom: 56px; }
+  .step {
+    background: var(--white); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 28px 24px; position: relative;
+  }
+  .step::before {
+    counter-increment: s; content: counter(s);
+    display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
+    background: var(--brand); color: var(--white); font-weight: 800; font-size: 17px; margin-bottom: 18px;
+  }
+  .step h3 { font-size: 19px; margin-bottom: 8px; }
+  .step p { color: var(--muted); font-size: 15.5px; }
+
+  /* Features */
+  .features { background: var(--white); }
+  .feature { padding: 64px 0; border-top: 1px solid var(--line); }
+  .feature:first-of-type { border-top: 0; padding-top: 0; }
+  .feature h3 { font-size: clamp(26px, 2.8vw, 34px); font-weight: 800; letter-spacing: -0.025em; margin-bottom: 16px; }
+  .feature .text p { color: var(--muted); font-size: 18px; }
+  .feature .text p + p { margin-top: 14px; }
+  .tag {
+    display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--brand-strong);
+    background: var(--tint); border-radius: 999px; padding: 6px 12px; margin-bottom: 18px;
+  }
+  .zones-demo { display: grid; gap: 10px; margin-top: 26px; }
+  .zone-row {
+    display: grid; grid-template-columns: 74px 1fr auto; align-items: center; gap: 16px;
+    background: var(--cream); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; font-size: 16px;
+  }
+  .zone-row .km { font-weight: 800; font-size: 20px; letter-spacing: -0.02em; }
+  .zone-row .bar { height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; }
+  .zone-row .bar i { display: block; height: 100%; background: var(--brand); border-radius: 99px; }
+  .zone-row .min { font-weight: 700; white-space: nowrap; }
+  .card-shot {
+    border-radius: 24px; overflow: hidden; box-shadow: var(--shadow-lg); border: 1px solid var(--line);
+    background: var(--white); max-width: 460px; margin: 0 auto;
+  }
+  .checks { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 10px; }
+  .checks li { position: relative; padding-left: 32px; font-size: 16.5px; }
+  .checks li::before {
+    content: ""; position: absolute; left: 0; top: 3px; width: 21px; height: 21px; border-radius: 50%;
+    background: var(--green-tint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2326734c' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 13px no-repeat;
+  }
+  .mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 8px; }
+  .mini {
+    background: var(--cream); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px;
+  }
+  .mini .ico {
+    width: 44px; height: 44px; border-radius: 13px; background: var(--white); border: 1px solid var(--line);
+    display: grid; place-items: center; color: var(--brand-strong); margin-bottom: 16px;
+  }
+  .mini h4 { margin: 0 0 6px; font-size: 18px; letter-spacing: -0.01em; }
+  .mini p { color: var(--muted); font-size: 15.5px; }
+
+  /* Pricing */
+  .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch; }
+  .price-card {
+    background: var(--white); border: 1px solid var(--line); border-radius: 28px; padding: 44px;
+    box-shadow: var(--shadow);
+  }
+  .price-card.dark { background: var(--ink); color: var(--white); border-color: var(--ink); }
+  .price-big { display: flex; align-items: baseline; gap: 12px; margin: 10px 0 6px; }
+  .price-big strong { font-size: 84px; font-weight: 800; letter-spacing: -0.05em; line-height: 1; }
+  .price-big span { font-size: 18px; color: var(--muted); font-weight: 600; }
+  .price-card.dark .price-big span { color: #c9bdb5; }
+  .price-card h3 { font-size: 20px; }
+  .price-card .sub { color: var(--muted); }
+  .price-card.dark .sub { color: #c9bdb5; }
+  .price-card.dark .checks li::before { background-color: rgba(255,255,255,.1); }
+  .example {
+    margin-top: 28px; background: rgba(255, 255, 255, .07); border: 1px solid rgba(255,255,255,.12);
+    border-radius: 16px; padding: 18px 20px; font-size: 15.5px; color: #e8e0da;
+  }
+  .example b { color: var(--white); }
+  .statement-shot { margin-top: 56px; }
+  .statement-shot .caption { margin-top: 18px; }
+
+  /* Tracking (optional) */
+  .tracking { background: var(--sand); }
+  .optional {
+    display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700;
+    color: var(--green); background: var(--green-tint); border-radius: 999px; padding: 6px 12px; margin-bottom: 18px;
+  }
+  .track-grid { display: grid; grid-template-columns: auto 1fr; gap: 40px; align-items: center; margin-top: 8px; }
+  .track-phones { display: flex; gap: 18px; }
+  .track-phones .phone { width: 230px; }
+
+  /* FAQ */
+  .faq { max-width: 820px; margin: 0 auto; }
+  details {
+    background: var(--white); border: 1px solid var(--line); border-radius: 18px; padding: 0 24px; margin-bottom: 12px;
+  }
+  summary {
+    cursor: pointer; list-style: none; padding: 22px 36px 22px 0; font-weight: 700; font-size: 18px; position: relative;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after {
+    content: "+"; position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+    font-size: 26px; font-weight: 500; color: var(--brand); transition: transform .2s;
+  }
+  details[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+  details p { padding: 0 0 22px; color: var(--muted); font-size: 16.5px; }
+
+  /* CTA */
+  .cta {
+    background: var(--brand); color: var(--white); border-radius: 32px; padding: 72px 56px; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .cta::before, .cta::after {
+    content: ""; position: absolute; border-radius: 50%; border: 60px solid rgba(255,255,255,.08); pointer-events: none;
+  }
+  .cta::before { width: 360px; height: 360px; left: -140px; bottom: -180px; }
+  .cta::after { width: 300px; height: 300px; right: -100px; top: -150px; }
+  .cta h2 { max-width: 760px; margin: 0 auto; }
+  .cta p { color: #ffe2d6; font-size: 20px; max-width: 620px; margin: 18px auto 0; }
+  .cta .hero-ctas { justify-content: center; position: relative; z-index: 1; }
+  .cta .btn.primary { background: var(--white); color: var(--brand-strong); }
+  .cta .btn.primary:hover { background: var(--tint); }
+  .cta .btn.ghost { background: transparent; color: var(--white); box-shadow: inset 0 0 0 2px rgba(255,255,255,.5); }
+  .cta .btn.ghost:hover { background: rgba(255,255,255,.1); }
+
+  footer { padding: 48px 0 56px; color: var(--muted); font-size: 15px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; align-items: center; }
+  footer .logo b { font-size: 24px; }
+
+  /* Responsive */
+  @media (max-width: 1080px) {
+    .split, .split.reverse { grid-template-columns: 1fr; gap: 48px; }
+    .split.reverse > :first-child { order: 0; }
+    .own { grid-template-columns: 1fr; padding: 48px 36px; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .mini-grid { grid-template-columns: 1fr 1fr; }
+    .track-grid { grid-template-columns: 1fr; }
+    .track-phones { justify-content: center; }
+  }
+  @media (max-width: 860px) {
+    .nav-links { display: none; }
+    section { padding: 72px 0; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .strip .wrap { grid-template-columns: 1fr 1fr; }
+    .strip .wrap > div:nth-child(3) { border-left: 0; padding-left: 0; }
+    .strip .wrap > div:nth-child(n+3) { border-top: 1px solid var(--line); }
+    .hero-visual { padding-right: 70px; }
+    .hero-visual .phone { width: 170px; border-radius: 30px; padding: 6px; bottom: -30px; }
+    .hero-visual .phone img { border-radius: 25px; }
+  }
+  @media (max-width: 600px) {
+    body { font-size: 16px; }
+    .wrap { padding: 0 16px; }
+    .hero { padding-top: 40px; }
+    .hero h1 .accent { white-space: normal; }
+    .hero .lead, .lead { font-size: 18px; }
+    .hero-ctas .btn { width: 100%; }
+    .hero-visual { padding-right: 0; padding-bottom: 150px; }
+    .hero-visual .phone { width: 150px; right: 8px; bottom: 0; }
+    .browser .bar em { display: none; }
+    .strip .wrap > div { padding: 20px 14px; }
+    .strip .wrap > div:nth-child(odd) { padding-left: 0; }
+    .strip strong { font-size: 24px; }
+    .steps, .mini-grid { grid-template-columns: 1fr; }
+    .phones-pair .phone { width: 46%; border-radius: 28px; padding: 6px; }
+    .phones-pair .phone img { border-radius: 23px; }
+    .phones-pair .phone:nth-child(2) { margin-top: 40px; }
+    .track-phones .phone { width: 48%; border-radius: 28px; padding: 6px; }
+    .track-phones .phone img { border-radius: 23px; }
+    .own { padding: 36px 22px; border-radius: 24px; }
+    .price-card { padding: 30px 22px; }
+    .price-big strong { font-size: 64px; }
+    .cta { padding: 52px 22px; border-radius: 24px; }
+    .zone-row { grid-template-columns: 58px 1fr auto; gap: 10px; padding: 10px 12px; font-size: 15px; }
+    .nav .btn { padding: 10px 14px; font-size: 14px; }
+    .logo b { font-size: 26px; }
+    .logo span { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="top">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Dostavko za restorane"><b>dostavko</b><span>za restorane</span></a>
+    <nav class="nav-links" aria-label="Glavna navigacija">
+      <a href="#zasto">Zašto Dostavko</a>
+      <a href="#kako-radi">Kako radi</a>
+      <a href="#mogucnosti">Mogućnosti</a>
+      <a href="#cijena">Cijena</a>
+      <a href="#pitanja">Pitanja</a>
+    </nav>
+    <a class="btn primary" href="#kontakt">Prijavite restoran</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Za restorane u Sarajevu koji imaju svoju dostavu</span>
+        <h1>Neka Vas gladni vide <span class="accent">prije nego nazovu.</span></h1>
+        <p class="lead">Dostavko je aplikacija za naručivanje hrane. Kupci vide Vaš meni sa slikama i cijenama i naruče u par klikova. Narudžba zazvoni kod Vas, a dostavlja Vaš dostavljač, kao i do sada.</p>
+        <div class="hero-ctas">
+          <a class="btn primary" href="#kontakt">Želim Dostavko u restoranu</a>
+          <a class="btn ghost" href="#kako-radi">Pogledajte kako radi</a>
+        </div>
+        <ul class="chips">
+          <li>Bez pretplate</li>
+          <li>Bez dodatnih naknada</li>
+          <li>Otkažite kad hoćete</li>
+          <li>Radi na mobitelu, tabletu ili računaru</li>
+        </ul>
+      </div>
+      <div class="hero-visual">
+        <div class="browser">
+          <div class="bar"><i></i><i></i><i></i><em>Dostavko za restorane · Narudžbe</em></div>
+          <img src="img/board.jpg" width="1800" height="1125" alt="Ekran narudžbi u Dostavku: nove narudžbe, narudžbe u kuhinji i ture na dostavi" />
+        </div>
+        <div class="phone"><img src="img/board-phone.jpg" width="720" height="1560" alt="Ista aplikacija na mobitelu: nova narudžba čeka potvrdu" /></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="strip">
+    <div class="wrap">
+      <div><strong>0 KM</strong><span>mjesečna pretplata</span></div>
+      <div><strong>5%</strong><span>samo od isporučene narudžbe</span></div>
+      <div><strong>0 KM</strong><span>dodatno za kupca</span></div>
+      <div><strong>Vaš</strong><span>dostavljač, Vaši kupci</span></div>
+    </div>
+  </div>
+
+  <!-- VISIBILITY -->
+  <section class="visibility" id="zasto">
+    <div class="wrap split">
+      <div>
+        <span class="eyebrow">Glavna korist</span>
+        <h2>Više ljudi vidi Vaš restoran. I zna šta naručuje.</h2>
+        <p class="lead" style="margin-top:18px">Ljudi žele vidjeti hranu prije nego što naruče ili nazovu. Sa Dostavkom Vaš meni je uvijek pred njima: slike, opisi, veličine, dodaci i tačne cijene.</p>
+        <div class="benefits">
+          <div class="benefit">
+            <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></div>
+            <div><h3>Novi kupci Vas pronađu</h3><p>Kupci pretražuju po kuhinji, jelu i blizini. Vaš restoran se pojavi ljudima koji Vas do sada nisu znali.</p></div>
+          </div>
+          <div class="benefit">
+            <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+            <div><h3>Kupac vidi šta dobija</h3><p>Slika i opis prodaju bolje od nabrajanja preko telefona. Manje pitanja, manje grešaka, veće narudžbe.</p></div>
+          </div>
+          <div class="benefit">
+            <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></div>
+            <div><h3>Manje telefoniranja u gužvi</h3><p>Narudžba stiže napisana: jela, adresa, sprat, napomena i iznos. Nema pogrešno zapisanih adresa ni zauzete linije.</p></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="phones-pair">
+          <div class="phone"><img src="img/customer-menu.jpg" width="720" height="1560" alt="Stranica restorana u Dostavku kako je vidi kupac: slika, ocjena, vrijeme dostave i meni" decoding="async" /></div>
+          <div class="phone"><img src="img/menu-dish.jpg" width="720" height="1560" alt="Kupac bira veličinu pizze i dodatke prije nego doda jelo u korpu" decoding="async" /></div>
+        </div>
+        <p class="caption">Ovako kupac vidi Vaš restoran i meni.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- OWN DELIVERY -->
+  <section>
+    <div class="wrap">
+      <div class="own">
+        <div>
+          <span class="eyebrow">Samo za restorane sa svojom dostavom</span>
+          <h2>Mi ne dostavljamo. Dostavlja Vaš čovjek.</h2>
+          <p class="lead">Dostavko je napravljen za restorane koji već imaju svoje dostavljače. Mi Vam dovodimo narudžbe, a hranu do kupca nosi Vaš dostavljač, kao i danas. Zato je i cijena mnogo manja nego kod platformi koje dostavljaju same.</p>
+        </div>
+        <ul>
+          <li><b>→</b><div>Vaš dostavljač, Vaš kvalitet<small>Vi odlučujete ko nosi hranu i kako stiže do kupca.</small></div></li>
+          <li><b>→</b><div>Vi određujete vrijeme dostave<small>Pri prihvatanju odaberete za koliko stiže: 20, 30, 45 minuta.</small></div></li>
+          <li><b>→</b><div>Kupac plaća Vašem dostavljaču<small>Gotovinom pri preuzimanju, kao kod telefonske narudžbe.</small></div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="kako-radi" style="padding-top:24px">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Kako radi</span>
+        <h2>Od narudžbe do vrata u četiri koraka</h2>
+        <p class="lead">Ne treba Vam nova oprema ni instalacija. Dostavko radi u pregledniku na uređaju koji već imate.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><h3>Kupac naruči</h3><p>Pronađe Vas u aplikaciji ili na webu, izabere jela i pošalje narudžbu. Cijene su iste kao kod Vas u restoranu.</p></div>
+        <div class="step"><h3>Vama zazvoni</h3><p>Zvono svira dok ne odgovorite. Prihvatite jednim dodirom i odaberite za koliko minuta stiže.</p></div>
+        <div class="step"><h3>Kuhinja priprema</h3><p>Narudžba ide u kolonu „U kuhinji”. Kad je gotova, označite je spremnom za dostavu.</p></div>
+        <div class="step"><h3>Vaš dostavljač nosi</h3><p>Složite turu od više narudžbi i pošaljite dostavljača. Kupac dobije obavijest da hrana stiže.</p></div>
+      </div>
+      <div class="browser">
+        <div class="bar"><i></i><i></i><i></i><em>Dostavko za restorane · Dostave</em></div>
+        <img src="img/deliveries.jpg" width="1800" height="1125" alt="Ekran Dostave: nova tura od dvije narudžbe, izbor dostavljača i predložena ruta na mapi" decoding="async" />
+      </div>
+      <p class="caption" style="margin-top:18px">Cijelo veče na jednom ekranu: nove narudžbe, kuhinja i ture sa predloženom rutom.</p>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="mogucnosti">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Mogućnosti</span>
+        <h2>Vi postavljate pravila. Dostavko ih poštuje.</h2>
+        <p class="lead">Gdje dostavljate, kad radite i šta je danas na meniju određujete sami, u par klikova.</p>
+      </div>
+
+      <div class="feature">
+        <div class="split">
+          <div class="text">
+            <span class="tag">Zona dostave</span>
+            <h3>Dostavljate samo dokle se Vama isplati</h3>
+            <p>Postavite radijus dostave oko restorana. Kupac koji je dalje ne može naručiti, pa Vaš dostavljač ne vozi na kraj grada.</p>
+            <p>Ili napravite zone po iznosu narudžbe: male narudžbe dostavljate u blizini, a veće i dalje. Na primjer:</p>
+            <div class="zones-demo" aria-label="Primjer zona dostave">
+              <div class="zone-row"><span class="km">1 km</span><span class="bar"><i style="width:20%"></i></span><span class="min">bez minimuma</span></div>
+              <div class="zone-row"><span class="km">3 km</span><span class="bar"><i style="width:60%"></i></span><span class="min">od 30 KM</span></div>
+              <div class="zone-row"><span class="km">5 km</span><span class="bar"><i style="width:100%"></i></span><span class="min">od 50 KM</span></div>
+            </div>
+          </div>
+          <div>
+            <div class="card-shot"><img src="img/zones.png" width="1120" height="1656" alt="Podešavanje dostave: tri zone po iznosu narudžbe na mapi oko restorana" decoding="async" /></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="split reverse">
+          <div class="text">
+            <span class="tag">Radno vrijeme</span>
+            <h3>Narudžbe stižu samo kad radite</h3>
+            <p>Za svaki dan postavite kad počinjete i kad završavate primati narudžbe, ili ga označite kao neradni. Van radnog vremena kupci vide da ste zatvoreni.</p>
+            <ul class="checks">
+              <li>Različito radno vrijeme za svaki dan u sedmici</li>
+              <li>Prevelika gužva? Dugme „Pauziraj” zaustavi nove narudžbe dok ne sustignete</li>
+              <li>Zvono svira dok ne odgovorite, pa nijedna narudžba ne promakne</li>
+            </ul>
+          </div>
+          <div>
+            <div class="card-shot" style="max-width:380px"><img src="img/hours.png" width="752" height="1504" alt="Podešavanje radnog vremena po danima, nedjelja zatvoreno" decoding="async" /></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="text" style="max-width:760px">
+          <span class="tag">Meni</span>
+          <h3>Meni uređujete sami, kad god hoćete</h3>
+          <p>Dodajte jelo sa slikom, opisom i cijenom, sa veličinama i dodacima. Nestalo Vam je nečega? Jednim dodirom ga isključite i kupci ga odmah više ne vide. Mi Vam na početku besplatno unesemo cijeli meni.</p>
+        </div>
+        <div class="browser" style="margin-top:40px">
+          <div class="bar"><i></i><i></i><i></i><em>Dostavko za restorane · Meni</em></div>
+          <img src="img/menu.jpg" width="1800" height="719" alt="Uređivanje menija: jela sa slikama, cijenama i prekidačem Dostupno ili Nema danas" decoding="async" />
+        </div>
+      </div>
+
+      <div class="feature">
+        <h3 style="margin-bottom:32px">I sve ostalo što treba restoranu</h3>
+        <div class="mini-grid">
+          <div class="mini">
+            <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></div>
+            <h4>Telefonske narudžbe na istom mjestu</h4><p>Narudžbu primljenu telefonom upišete u Dostavko i ona ide na isti ekran. Te narudžbe ne naplaćujemo.</p>
+          </div>
+          <div class="mini">
+            <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg></div>
+            <h4>Ture i ruta</h4><p>Više narudžbi spojite u jednu turu. Dostavko predloži redoslijed adresa tako da dostavljač vozi najkraće.</p>
+          </div>
+          <div class="mini">
+            <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 13.9V21h12v-7.1"/><path d="M6 14a4 4 0 0 1-1-7.9 5 5 0 0 1 9.6-1.6A4 4 0 1 1 18 14z"/></svg></div>
+            <h4>Ekran za kuhinju</h4><p>Za veće kuhinje: posebni ekran sa listićima, odvojeno kuhinja i šank, „Gotovo” jednim dodirom.</p>
+          </div>
+          <div class="mini">
+            <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 6-6"/></svg></div>
+            <h4>Statistika</h4><p>Narudžbe i promet za danas, sedmicu i mjesec. Vidite koja jela se najviše prodaju i kad je najveća gužva.</p>
+          </div>
+          <div class="mini">
+            <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></div>
+            <h4>Jasan mjesečni obračun</h4><p>Svaka isporučena narudžba i 5% za nju, red po red. Tačno znate šta plaćate i zašto.</p>
+          </div>
+          <div class="mini">
+            <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2.5"/><path d="M12 18h.01"/></svg></div>
+            <h4>Uređaj koji već imate</h4><p>Mobitel, tablet ili računar. Bez instalacije i bez troška za opremu. Za tablet postoji i posebna aplikacija.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="cijena">
+    <div class="wrap">
+      <div class="section-head center">
+        <span class="eyebrow">Cijena</span>
+        <h2>Besplatno za početak. Plaćate samo kad zaradite.</h2>
+        <p class="lead">Nema pretplate, nema ugovora na godinu i nema skrivenih troškova. Uzimamo mali procenat od narudžbe koja je stvarno isporučena.</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <h3>Pristup i postavljanje</h3>
+          <div class="price-big"><strong>0 KM</strong><span>mjesečno</span></div>
+          <p class="sub">Za sve što je na ovoj stranici.</p>
+          <ul class="checks">
+            <li>Bez pretplate i bez članarine</li>
+            <li>Bez troška za uređaje i instalaciju</li>
+            <li>Meni Vam unesemo i postavimo besplatno</li>
+            <li>Bez dodatnih naknada i promjena uslova u hodu</li>
+            <li>Otkažite kad hoćete, bez penala</li>
+          </ul>
+        </div>
+        <div class="price-card dark">
+          <h3>Po isporučenoj narudžbi</h3>
+          <div class="price-big"><strong>5%</strong><span>od narudžbe</span></div>
+          <p class="sub">Samo kad je narudžba preko Dostavka isporučena.</p>
+          <ul class="checks">
+            <li>Odbijene i otkazane narudžbe ne plaćate</li>
+            <li>Telefonske narudžbe koje sami upišete su besplatne</li>
+            <li>Kupac ne plaća nikakvu dodatnu naknadu</li>
+            <li>Na kraju mjeseca pregled svih narudžbi i račun</li>
+          </ul>
+          <div class="example">Primjer: <b>200 narudžbi po 25 KM</b> je 5.000 KM prometa preko Dostavka. Za to nam plaćate <b>250 KM</b>. Ako nema narudžbi, ne plaćate ništa.</div>
+        </div>
+      </div>
+      <div class="statement-shot">
+        <div class="browser">
+          <div class="bar"><i></i><i></i><i></i><em>Dostavko za restorane · Obračun</em></div>
+          <img src="img/statement.jpg" width="1800" height="1125" alt="Mjesečni obračun: broj isporučenih narudžbi, vrijednost i provizija 5% po svakoj narudžbi" decoding="async" />
+        </div>
+        <p class="caption">Obračun je uvijek otvoren u aplikaciji, ne čekate kraj mjeseca da vidite koliko dugujete.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRACKING (OPTIONAL) -->
+  <section class="tracking" id="pracenje">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="optional">● Opcionalno</span>
+        <h2>Aplikacija za dostavljače i praćenje uživo</h2>
+        <p class="lead">Ako želite, Vaši dostavljači dobiju besplatnu aplikaciju. Ne morate je koristiti: Dostavko radi i bez nje.</p>
+      </div>
+      <div class="track-grid">
+        <div class="track-phones">
+          <div class="phone"><img src="img/courier-run.jpg" width="720" height="1480" alt="Aplikacija za dostavljače: tura sa tri dostave poredane redom i iznos za naplatu" decoding="async" /></div>
+          <div class="phone"><img src="img/courier-stop.jpg" width="720" height="1480" alt="Aplikacija za dostavljače: trenutna adresa, napomena kupca, iznos, navigacija i dugme Isporučeno i naplaćeno" decoding="async" /></div>
+        </div>
+        <div>
+          <ul class="checks" style="margin:0 0 32px">
+            <li><b>Dostavljač</b> dobije turu na mobitel: adrese redom, napomene, iznos za naplatu i navigaciju jednim dodirom.</li>
+            <li><b>Kupac</b> na mapi vidi gdje mu je hrana i za koliko stiže. Manje poziva „gdje mi je narudžba?”.</li>
+            <li><b>Vi</b> u restoranu vidite koja je dostava gotova i kad se dostavljač vraća.</li>
+          </ul>
+          <div class="browser">
+            <div class="bar"><i></i><i></i><i></i><em>Praćenje narudžbe · kupac</em></div>
+            <img src="img/tracking.jpg" width="1800" height="852" alt="Kupac prati narudžbu uživo: dostavljač na mapi, redoslijed dostava i procijenjeno vrijeme dolaska" decoding="async" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="pitanja">
+    <div class="wrap">
+      <div class="section-head center">
+        <span class="eyebrow">Pitanja</span>
+        <h2>Najčešća pitanja restorana</h2>
+      </div>
+      <div class="faq">
+        <details>
+          <summary>Moram li izaći sa Korpe ili druge platforme?</summary>
+          <p>Ne. Dostavko je dodatni kanal. Možete ostati gdje jeste, a svaka narudžba preko nas Vas košta samo 5%.</p>
+        </details>
+        <details>
+          <summary>Ko dostavlja hranu?</summary>
+          <p>Vaš dostavljač, kao i danas. Dostavko je samo za restorane koji već imaju svoju dostavu. Mi dovodimo narudžbe, Vi ih pripremate i dostavljate.</p>
+        </details>
+        <details>
+          <summary>Kako kupci plaćaju?</summary>
+          <p>Gotovinom pri preuzimanju, Vašem dostavljaču. Novac od narudžbe ostaje kod Vas.</p>
+        </details>
+        <details>
+          <summary>Kako i kada plaćam proviziju?</summary>
+          <p>Na kraju mjeseca dobijete pregled svih isporučenih narudžbi i račun za 5% od njih, koji platite uplatom na račun. Obračun u svakom trenutku vidite i u aplikaciji.</p>
+        </details>
+        <details>
+          <summary>Mogu li u Dostavku imati veće cijene nego u restoranu?</summary>
+          <p>Molimo da cijene budu iste kao kod Vas. Upravo zato kupci biraju Dostavko: nema dodatnih naknada ni skupljih cijena. A to znači više narudžbi za Vas.</p>
+        </details>
+        <details>
+          <summary>Treba li mi nova oprema?</summary>
+          <p>Ne. Dostavko radi u pregledniku na mobitelu, tabletu ili računaru koji već imate. Dovoljan je internet.</p>
+        </details>
+        <details>
+          <summary>Ko unosi meni?</summary>
+          <p>Mi, besplatno, na početku. Poslije meni mijenjate sami: nova jela, cijene, slike i dostupnost.</p>
+        </details>
+        <details>
+          <summary>Mogu li prestati kad hoću?</summary>
+          <p>Da. Nema ugovora na godinu ni otkaznog roka. Javite nam se i ugasimo Vaš restoran u aplikaciji. Platite samo narudžbe isporučene do tada.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="kontakt" style="padding-top:0">
+    <div class="wrap">
+      <div class="cta">
+        <h2>Pokažemo Vam za 15 minuta, na Vašem telefonu.</h2>
+        <p>Javite nam se i dođemo u restoran. Ako Vam se svidi, isti dan otvorimo račun i unesemo meni.</p>
+        <div class="hero-ctas">
+          <!-- TODO prije objave: upisati pravi broj telefona i e-mail u href -->
+          <a class="btn primary" href="tel:+387XXXXXXXXX">Pozovite nas</a>
+          <a class="btn ghost" href="mailto:kontakt@example.com">Pišite nam</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="logo" href="#top"><b>dostavko</b></a>
+    <span>Naručivanje hrane iz komšiluka · Sarajevo</span>
+    <span>© 2026 Dostavko</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var nav = document.querySelector('.nav');
+    function onScroll() { nav.classList.toggle('scrolled', window.scrollY > 8); }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
+</body>
+</html>
