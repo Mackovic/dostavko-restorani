@@ -302,6 +302,15 @@
   .cta h2 { max-width: 760px; margin: 0 auto; }
   .cta p { color: #ffe2d6; font-size: 20px; max-width: 620px; margin: 18px auto 0; }
   .cta .hero-ctas { justify-content: center; position: relative; z-index: 1; }
+  .contact { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 36px; position: relative; z-index: 1; }
+  .contact-item {
+    display: inline-flex; align-items: center; gap: 16px; text-decoration: none; color: var(--ink);
+    background: var(--white); border-radius: 18px; padding: 16px 26px 16px 20px; text-align: left;
+    font-size: 22px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2;
+  }
+  .contact-item svg { color: var(--brand); flex: none; }
+  .contact-item small { display: block; font-size: 13px; font-weight: 600; color: var(--muted); letter-spacing: 0; }
+  .contact-item:hover { background: var(--tint); }
   .cta .btn.primary { background: var(--white); color: var(--brand-strong); }
   .cta .btn.primary:hover { background: var(--tint); }
   .cta .btn.ghost { background: transparent; color: var(--white); box-shadow: inset 0 0 0 2px rgba(255,255,255,.5); }
@@ -355,6 +364,7 @@
     .price-card { padding: 30px 22px; }
     .price-big strong { font-size: 64px; }
     .cta { padding: 52px 22px; border-radius: 24px; }
+    .contact-item { width: 100%; font-size: 20px; }
     .zone-row { grid-template-columns: 58px 1fr auto; gap: 10px; padding: 10px 12px; font-size: 15px; }
     .nav .btn { padding: 10px 14px; font-size: 14px; }
     .logo b { font-size: 26px; }
@@ -385,7 +395,7 @@
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <span class="eyebrow">Za restorane u Sarajevu koji imaju svoju dostavu</span>
-        <h1>Neka Vas gladni vide <span class="accent">prije nego nazovu.</span></h1>
+        <h1>Kupci vide Vaš meni <span class="accent">prije nego naruče.</span></h1>
         <p class="lead">Dostavko je aplikacija za naručivanje hrane. Kupci vide Vaš meni sa slikama i cijenama i naruče u par klikova. Narudžba zazvoni kod Vas, a dostavlja Vaš dostavljač, kao i do sada.</p>
         <div class="hero-ctas">
           <a class="btn primary" href="#kontakt">Želim Dostavko u restoranu</a>
@@ -435,7 +445,7 @@
           </div>
           <div class="benefit">
             <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></div>
-            <div><h3>Manje telefoniranja u gužvi</h3><p>Narudžba stiže napisana: jela, adresa, sprat, napomena i iznos. Nema pogrešno zapisanih adresa ni zauzete linije.</p></div>
+            <div><h3>Manje telefoniranja u gužvi</h3><p>Narudžba stiže napisana: jela, adresa, napomena i iznos. Nema pogrešno zapisanih adresa ni zauzete linije.</p></div>
           </div>
         </div>
       </div>
@@ -456,7 +466,7 @@
         <div>
           <span class="eyebrow">Samo za restorane sa svojom dostavom</span>
           <h2>Mi ne dostavljamo. Dostavlja Vaš čovjek.</h2>
-          <p class="lead">Dostavko je napravljen za restorane koji već imaju svoje dostavljače. Mi Vam dovodimo narudžbe, a hranu do kupca nosi Vaš dostavljač, kao i danas. Zato je i cijena mnogo manja nego kod platformi koje dostavljaju same.</p>
+          <p class="lead">Dostavko je napravljen za restorane koji već imaju svoje dostavljače. Mi Vam donosimo narudžbe, a hranu do kupca nosi Vaš dostavljač, kao i danas. Zato je i cijena mnogo manja nego kod platformi koje dostavljaju same.</p>
         </div>
         <ul>
           <li><b>→</b><div>Vaš dostavljač, Vaš kvalitet<small>Vi odlučujete ko nosi hranu i kako stiže do kupca.</small></div></li>
@@ -485,7 +495,7 @@
         <div class="bar"><i></i><i></i><i></i><em>Dostavko za restorane · Dostave</em></div>
         <img src="img/deliveries.jpg" width="1800" height="1125" alt="Ekran Dostave: nova tura od dvije narudžbe, izbor dostavljača i predložena ruta na mapi" decoding="async" />
       </div>
-      <p class="caption" style="margin-top:18px">Cijelo veče na jednom ekranu: nove narudžbe, kuhinja i ture sa predloženom rutom.</p>
+      <p class="caption" style="margin-top:18px">Sve narudžbe na jednom ekranu: nove, u kuhinji i na dostavi, sa predloženom rutom.</p>
     </div>
   </section>
 
@@ -603,7 +613,7 @@
         <div class="price-card dark">
           <h3>Po isporučenoj narudžbi</h3>
           <div class="price-big"><strong>5%</strong><span>od narudžbe</span></div>
-          <p class="sub">Samo kad je narudžba preko Dostavka isporučena.</p>
+          <p class="sub">Samo kad je narudžba došla preko Dostavka i isporučena.</p>
           <ul class="checks">
             <li>Odbijene i otkazane narudžbe ne plaćate</li>
             <li>Telefonske narudžbe koje sami upišete su besplatne</li>
@@ -660,12 +670,12 @@
       </div>
       <div class="faq">
         <details>
-          <summary>Moram li izaći sa Korpe ili druge platforme?</summary>
+          <summary>Moram li izaći sa drugih platformi?</summary>
           <p>Ne. Dostavko je dodatni kanal. Možete ostati gdje jeste, a svaka narudžba preko nas Vas košta samo 5%.</p>
         </details>
         <details>
           <summary>Ko dostavlja hranu?</summary>
-          <p>Vaš dostavljač, kao i danas. Dostavko je samo za restorane koji već imaju svoju dostavu. Mi dovodimo narudžbe, Vi ih pripremate i dostavljate.</p>
+          <p>Vaš dostavljač, kao i danas. Dostavko je samo za restorane koji već imaju svoju dostavu. Mi donosimo narudžbe, Vi ih pripremate i dostavljate.</p>
         </details>
         <details>
           <summary>Kako kupci plaćaju?</summary>
@@ -685,7 +695,7 @@
         </details>
         <details>
           <summary>Ko unosi meni?</summary>
-          <p>Mi, besplatno, na početku. Poslije meni mijenjate sami: nova jela, cijene, slike i dostupnost.</p>
+          <p>Mi. Pošaljete nam meni ili fotografiju menija, a mi besplatno unesemo jela, cijene i slike.</p>
         </details>
         <details>
           <summary>Mogu li prestati kad hoću?</summary>
@@ -699,12 +709,18 @@
   <section id="kontakt" style="padding-top:0">
     <div class="wrap">
       <div class="cta">
-        <h2>Pokažemo Vam za 15 minuta, na Vašem telefonu.</h2>
-        <p>Javite nam se i dođemo u restoran. Ako Vam se svidi, isti dan otvorimo račun i unesemo meni.</p>
-        <div class="hero-ctas">
-          <!-- TODO prije objave: upisati pravi broj telefona i e-mail u href -->
-          <a class="btn primary" href="tel:+387XXXXXXXXX">Pozovite nas</a>
-          <a class="btn ghost" href="mailto:kontakt@example.com">Pišite nam</a>
+        <h2>Pokažemo Vam Dostavko za 15 minuta, u Vašem restoranu.</h2>
+        <p>Javite nam se i dogovorimo termin. Ako Vam se svidi, isti dan otvorimo račun i unesemo meni.</p>
+        <!-- TODO: upisati pravi broj telefona i e-mail (tekst i href) -->
+        <div class="contact">
+          <a class="contact-item" href="tel:+3876XXXXXXXX">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+            <span><small>Telefon</small>06X XXX XXX</span>
+          </a>
+          <a class="contact-item" href="mailto:email@dostavko.ba">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2.5"/><path d="M22 7l-10 6L2 7"/></svg>
+            <span><small>E-mail</small>email@dostavko.ba</span>
+          </a>
         </div>
       </div>
     </div>
