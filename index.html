@@ -199,6 +199,26 @@
   .step h3 { font-size: 19px; margin-bottom: 8px; }
   .step p { color: var(--muted); font-size: 15.5px; }
 
+  /* Customer flow */
+  .flow { background: var(--sand); }
+  .flow-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 64px 40px; counter-reset: f; }
+  .flow-step { display: flex; flex-direction: column; }
+  .flow-step .phone { width: 250px; margin: 0 auto 28px; }
+  .flow-head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .flow-head::before {
+    counter-increment: f; content: counter(f);
+    display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; flex: none;
+    background: var(--brand); color: var(--white); font-weight: 800; font-size: 16px;
+  }
+  .flow-step h3 { font-size: 20px; }
+  .flow-step p { color: var(--muted); font-size: 15.5px; }
+  .flow-step .you {
+    margin-top: 14px; align-self: flex-start; font-size: 14px; color: var(--ink);
+    background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px;
+  }
+  .flow-step .you b { color: var(--brand-strong); }
+  .flow-hint { display: none; font-size: 14px; color: var(--muted); margin: -36px 0 20px; }
+
   /* Features */
   .features { background: var(--white); }
   .feature { padding: 64px 0; border-top: 1px solid var(--line); }
@@ -326,6 +346,7 @@
     .split.reverse > :first-child { order: 0; }
     .own { grid-template-columns: 1fr; padding: 48px 36px; }
     .steps { grid-template-columns: 1fr 1fr; }
+    .flow-grid { grid-template-columns: 1fr 1fr; }
     .mini-grid { grid-template-columns: 1fr 1fr; }
     .track-grid { grid-template-columns: 1fr; }
     .track-phones { justify-content: center; }
@@ -355,6 +376,15 @@
     .strip .wrap > div:nth-child(odd) { padding-left: 0; }
     .strip strong { font-size: 24px; }
     .steps, .mini-grid { grid-template-columns: 1fr; }
+    .flow-grid {
+      display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory;
+      margin: 0 -16px; padding: 0 16px 12px; scrollbar-width: none;
+    }
+    .flow-grid::-webkit-scrollbar { display: none; }
+    .flow-step { flex: 0 0 76%; scroll-snap-align: center; }
+    .flow-step .phone { width: 82%; border-radius: 34px; padding: 7px; }
+    .flow-step .phone img { border-radius: 28px; }
+    .flow-hint { display: block; }
     .phones-pair .phone { width: 46%; border-radius: 28px; padding: 6px; }
     .phones-pair .phone img { border-radius: 23px; }
     .phones-pair .phone:nth-child(2) { margin-top: 40px; }
@@ -496,6 +526,53 @@
         <img src="img/deliveries.jpg" width="1800" height="1125" alt="Ekran Dostave: nova tura od dvije narudžbe, izbor dostavljača i predložena ruta na mapi" decoding="async" />
       </div>
       <p class="caption" style="margin-top:18px">Sve narudžbe na jednom ekranu: nove, u kuhinji i na dostavi, sa predloženom rutom.</p>
+    </div>
+  </section>
+
+  <!-- CUSTOMER FLOW -->
+  <section class="flow" id="kupac">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Narudžba očima kupca</span>
+        <h2>Ovako Vaš kupac naručuje, od pretrage do vrata</h2>
+        <p class="lead">Šest koraka u aplikaciji za kupce. Kupac uvijek zna šta se dešava s narudžbom, pa Vas rjeđe zove da pita gdje je hrana.</p>
+      </div>
+      <p class="flow-hint">Prevucite za sljedeći korak →</p>
+      <ol class="flow-grid" style="list-style:none;margin-top:0;margin-bottom:0;padding-left:0">
+        <li class="flow-step">
+          <div class="phone"><img src="img/flow-1.jpg" width="720" height="1560" alt="Lista restorana koji dostavljaju na adresu kupca: Proper pizza i Forno Pizza sa ocjenom, vremenom dostave i minimalnom narudžbom" loading="lazy" decoding="async" /></div>
+          <div class="flow-head"><h3>Pronađe Vaš restoran</h3></div>
+          <p>Kupac vidi restorane koji dostavljaju na njegovu adresu i traži po imenu, jelu ili kuhinji.</p>
+        </li>
+        <li class="flow-step">
+          <div class="phone"><img src="img/flow-2.jpg" width="720" height="1560" alt="Meni sa slikama pića i korpa: pizza sa dodatnim sirom i Coca-Cola, ukupno 20,50 KM" loading="lazy" decoding="async" /></div>
+          <div class="flow-head"><h3>Izabere jela</h3></div>
+          <p>Bira sa slika, odabere veličinu i dodatke. U korpi vidi tačan iznos prije nego naruči.</p>
+        </li>
+        <li class="flow-step">
+          <div class="phone"><img src="img/flow-3.jpg" width="720" height="1560" alt="Završetak narudžbe: adresa, napomena za dostavljača, plaćanje gotovinom pri dostavi i dugme Naruči" loading="lazy" decoding="async" /></div>
+          <div class="flow-head"><h3>Pošalje narudžbu</h3></div>
+          <p>Adresa i telefon su već upisani, a dostavljaču može ostaviti napomenu. Plaća gotovinom pri dostavi, bez dodatnih naknada.</p>
+        </li>
+        <li class="flow-step">
+          <div class="phone"><img src="img/flow-4.jpg" width="720" height="1560" alt="Narudžba poslana: Čekamo da restoran potvrdi" loading="lazy" decoding="async" /></div>
+          <div class="flow-head"><h3>Čeka Vašu potvrdu</h3></div>
+          <p>Kupac vidi da je narudžba stigla i da restoran potvrđuje vrijeme.</p>
+          <span class="you"><b>Kod Vas:</b> zvoni nova narudžba dok ne odgovorite.</span>
+        </li>
+        <li class="flow-step">
+          <div class="phone"><img src="img/flow-5.jpg" width="720" height="1560" alt="Restoran je prihvatio narudžbu: hrana stiže između 14:34 i 14:44, restoran priprema" loading="lazy" decoding="async" /></div>
+          <div class="flow-head"><h3>Zna kad stiže</h3></div>
+          <p>Čim prihvatite, kupac vidi kad stiže hrana i da je kuhinja počela pripremu.</p>
+          <span class="you"><b>Kod Vas:</b> jedan dodir, „Prihvati · 30 min”.</span>
+        </li>
+        <li class="flow-step">
+          <div class="phone"><img src="img/flow-6.jpg" width="720" height="1560" alt="Hrana je na putu: dostavljač Haris stiže za oko 6 minuta, kupac je sljedeći na redu i zna koliko da pripremi" loading="lazy" decoding="async" /></div>
+          <div class="flow-head"><h3>Prati dostavljača</h3></div>
+          <p>Kad dostavljač krene, kupac zna za koliko stiže i koliko novca da pripremi. Ako dostavljač koristi našu aplikaciju, vidi ga i na mapi.</p>
+          <span class="you"><b>Kod Vas:</b> „Kreiraj turu” i dostavljač kreće.</span>
+        </li>
+      </ol>
     </div>
   </section>
 
